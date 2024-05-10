@@ -1,0 +1,22 @@
+# 路径生成
+需要先运行datasets下的ImgAbspath.py获取数据路径
+
+# 本地CPU训练tiny模型
+python train.py --weights weights/yolov7-tiny.pt --data data/mydata.yaml --epochs 50 --batch-size 6 --img 640 640
+--cfg cfg/training/yolov7-tiny.yaml --name yolov7-tiny --hyp data/hyp.scratch.p5.yaml --workers 0 --device cpu
+
+# 本地GPU训练tiny模型
+python train.py --weights weights/yolov7-tiny.pt --data data/mydata.yaml --epochs 50 --batch-size 16 --img 640 640 --cfg cfg/training/yolov7-tiny.yaml --name yolov7-tiny --hyp data/hyp.scratch.p5.yaml --workers 0 --device 0
+
+# epoch以及batch
+共设置50个epoch，训练50轮；每一轮总共6913张图片，即6913/6=1153个batch，也就是说每一轮需要分1153个批次处理所有图片
+
+# 断点处继续训练
+python train.py --weights runs/train/yolov7-tiny2/weights/last.pt --data data/mydata.yaml --epochs 50 --batch-size 16
+--img 640 640 --cfg cfg/training/yolov7-tiny.yaml --name yolov7-tiny --hyp data/hyp.scratch.p5.yaml --workers 0 --device 0
+
+# 本地GPU断点处继续训练
+python train.py --weights weights/yolov7-tiny.pt --data data/mydata.yaml --epochs 50 --batch-size 16 --img 640 640 --cfg cfg/training/yolov7-tiny.yaml --name yolov7-tiny --hyp data/hyp.scratch.p5.yaml --workers 0 --device 0--resume True
+
+# 小规模数据测试程序可行性
+使用Datasets_Test数据完成测试，相关说明见Datasets_Test\readme.txt，记得修改mydata.yaml中文件路径，以及cfg/training/yolov7-tiny.yaml中的nc类别数
